@@ -93,12 +93,6 @@ export default function App() {
         <Text style={styles.recordingCount}>Total Recordings: {recordings.length}</Text>
         {getRecordingLines()}
         <View style={styles.inputContainer}>
-          <TextInput
-            style={styles.input}
-            placeholder="Enter title for the recording"
-            value={title}
-            onChangeText={setTitle}
-          />
         </View>
       </ScrollView>
       <View style={styles.bottomContainer}>
