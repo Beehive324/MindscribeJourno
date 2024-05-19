@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, Button, TextInput, ScrollView } from 'react-native';
 import { Audio } from 'expo-av';
+import axios from 'axios';
 
 export default function App() {
   const [recording, setRecording] = React.useState();
@@ -28,16 +29,38 @@ export default function App() {
 
     await recording.stopAndUnloadAsync();
     const { sound, status } = await recording.createNewLoadedSoundAsync();
+    const uri = recording.getURI();
     const newRecording = {
       sound: sound,
       duration: getDurationFormatted(status.durationMillis),
-      file: recording.getURI(),
+      file: uri,
       title: title,
       date: new Date().toLocaleDateString()
     };
     
+    const analysis = await analyzeRecording(uri);
+    newRecording.tempo = analysis.tempo;
+    newRecording.mood = analysis.mood;
+
     setRecordings([...recordings, newRecording]);
     setTitle('');
+  }
+
+  async function analyzeRecording(uri) {
+    // Replace with your API call to analyze the recording
+    // Here is an example using a placeholder API call
+    try {
+      const response = await axios.post('https://api.example.com/analyze', {
+        audioUri: uri,
+      });
+      return {
+        tempo: response.data.tempo,
+        mood: response.data.mood,
+      };
+    } catch (err) {
+      console.error('Failed to analyze recording', err);
+      return { tempo: 'Unknown', mood: 'Unknown' };
+    }
   }
 
   function getDurationFormatted(milliseconds) {
@@ -53,7 +76,7 @@ export default function App() {
     return recordings.map((recordingLine, index) => (
       <View key={index} style={styles.row}>
         <Text style={styles.fill}>
-          {recordingLine.title || `Recording #${index + 1}`} | {recordingLine.duration} | {recordingLine.date}
+          {recordingLine.title || `Recording #${index + 1}`} | {recordingLine.duration} | {recordingLine.date} | Tempo: {recordingLine.tempo} | Mood: {recordingLine.mood}
         </Text>
         <Button onPress={() => recordingLine.sound.replayAsync()} title="Play" color="#1E90FF"></Button>
       </View>
@@ -70,6 +93,12 @@ export default function App() {
         <Text style={styles.recordingCount}>Total Recordings: {recordings.length}</Text>
         {getRecordingLines()}
         <View style={styles.inputContainer}>
+          <TextInput
+            style={styles.input}
+            placeholder="Enter title for the recording"
+            value={title}
+            onChangeText={setTitle}
+          />
         </View>
       </ScrollView>
       <View style={styles.bottomContainer}>
