@@ -9,6 +9,6 @@ const login = () => {
             </View>
     )
          
-}
+} 
 
 export default login
