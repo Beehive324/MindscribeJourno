@@ -76,7 +76,6 @@ export default function Record() {
   return (
     <View style={styles.container}>
       <ScrollView style={styles.scrollView}>
-        <Text style={styles.recordingCount}>Total Recordings: {recordings.length}</Text>
         {getRecordingLines()}
         <View style={styles.inputContainer}>
         </View>
