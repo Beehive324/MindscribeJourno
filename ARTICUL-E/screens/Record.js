@@ -91,7 +91,7 @@ export default function Record() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#234E5F',
     alignItems: 'center',
     justifyContent: 'center',
     padding: 20,
@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     paddingHorizontal: 10,
     width: '80%',
-    backgroundColor: 'white',
+    backgroundColor: '#234E5F',
   },
   row: {
     flexDirection: 'row',
@@ -138,6 +138,6 @@ const styles = StyleSheet.create({
     bottom: 0,
     flexDirection: 'row',
     justifyContent: 'space-around',
-    backgroundColor: '#fff',
+    backgroundColor: '#234E5F',
   },
 });
