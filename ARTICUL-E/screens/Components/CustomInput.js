@@ -1,22 +1,34 @@
-import React from "react";
-import { View, Text, TextInput } from "react-native";
+// Components/CustomInput.js
+import React from 'react';
+import { View, TextInput, StyleSheet } from 'react-native';
 
-const CustomInput = ({ value, setValue }) => {
-    const handleChange = (text) => {
-        // Update the value and pass it back to the parent component
-        setValue(text);
-    };
-
+const CustomInput = ({ placeholder, value, setValue, secureTextEntry }) => {
     return (
-        <View>
-            <TextInput
-                placeholder="Enter text here"
+        <View style={styles.container}>
+            <TextInput 
+                placeholder={placeholder}
                 value={value}
-                onChangeText={handleChange}
-                style={{ borderWidth: 1, borderColor: '#ccc', padding: 10, marginBottom: 10 }}
+                onChangeText={setValue}
+                style={styles.input}
+                secureTextEntry={secureTextEntry}
             />
         </View>
     );
 };
+
+const styles = StyleSheet.create({
+    container: {
+        backgroundColor: 'white',
+        width: '100%',
+        borderColor: '#e8e8e8',
+        borderWidth: 1,
+        borderRadius: 5,
+        paddingHorizontal: 10,
+        marginVertical: 5,
+    },
+    input: {
+        height: 40,
+    },
+});
 
 export default CustomInput;
