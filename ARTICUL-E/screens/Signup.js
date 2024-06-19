@@ -3,9 +3,9 @@ import { View, Text, StyleSheet, Button, Alert, TouchableOpacity } from 'react-n
 import CustomInput from './Components/CustomInput';
 import { useNavigation } from '@react-navigation/native';
 
-export default function Signup({ useNavigation}) {
+export default function Signup({ navigation}) {
     
-    const navigation = useNavigation()
+
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -70,4 +70,3 @@ const styles = StyleSheet.create({
         marginTop: 20,
     },
 });
-

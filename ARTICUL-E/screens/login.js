@@ -23,7 +23,7 @@ const Login = ({ navigation }) => {
                 placeholder="Password" 
                 value={password} 
                 setValue={setPassword} 
-                secureTextEntry
+                secureTextEntry={true}
             />
             <Button title="Login" onPress={onLoginPressed} />
             <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         marginBottom: 20,
     },
-    signUpText: {
+    signUpText: { 
         color: 'blue',
         marginTop: 20,
     },

@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Text } from 'react-native'; // Import Text from react-native
-import Record from './screens/Record';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import Login from './screens/login'; // Correct casing for Login
-import SplashScreen from './screens/Splashscreen'; // Correct casing for SplashScreen
-import Signup from './screens/Signup';
+import { View, StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import Record from './screens/Record';
+import Login from './screens/login'; 
+import SplashScreen from './screens/Splashscreen'; 
+import Signup from './screens/Signup';
+
+const Stack = createNativeStackNavigator();
 
 export default function App() {
   const [isShowSplashScreen, setIsShowSplashScreen] = useState(true);
@@ -14,21 +16,20 @@ export default function App() {
     setTimeout(() => {
       setIsShowSplashScreen(false);
     }, 3000);
-  }, []); // Add empty dependency array to useEffect to run only once
+  }, []); // Empty dependency array to run only once
 
   return (
     <NavigationContainer>
-    <View style={styles.container}>
-      {isShowSplashScreen ? <SplashScreen /> : <Signup />}
-    
-        <Stack.Navigator initialRouteName="Signup">
-          <Stack.Screen name = "Login" component={Login} />
-          <Stack.Screen name = "Signup" component={Signup} />
+      {isShowSplashScreen ? (
+        <SplashScreen />
+      ) : (
+        <Stack.Navigator>
+          <Stack.Screen name="Login" component={Login} />
+          <Stack.Screen name="Signup" component={Signup} />
+          <Stack.Screen name="Record" component={Record} />
         </Stack.Navigator>
-    </View>
+      )}
     </NavigationContainer>
-    
-
   );
 }
 
