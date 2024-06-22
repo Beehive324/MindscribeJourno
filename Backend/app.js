@@ -12,10 +12,33 @@ mongoose.connect(mongoUrl).then(()=>{
     console.log(e);
 });
 
+require('./Userdetails')
+
+const User = mongoose.model("UserInfo");
 app.get("/",(req, res)=>{
     res.send({status:"Started"})
-})
+});
+
+app.post('/register', async(req,res)=>{
+    const {name, email, password}=req.body;
+
+    const oldUser= await User.findOne({email:email});
+
+    if(oldUser){
+        return res.send({data:"User already exists!"});
+    }
+ 
+    try {
+        await User.create({
+            name: name,
+            email: email,
+            password: password
+        });
+        res.send({status: "ok", data: "User Created"})
+    } catch (error) {}
+
+});
 
 app.listen(5001, ()=> {
     console.log("Node js server started.");
-}) 
+});
