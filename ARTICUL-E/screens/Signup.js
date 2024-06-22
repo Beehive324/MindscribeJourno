@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, Button, Alert, TouchableOpacity } from 'react-native';
 import CustomInput from './Components/CustomInput';
 import { useNavigation } from '@react-navigation/native';
+import axios from 'axios';
 
 export default function Signup({ navigation}) {
     
@@ -15,15 +16,24 @@ export default function Signup({ navigation}) {
         navigation.navigate("Login");
     };
 
+
     const onSignupPressed = () => {
         if (password !== confirmPassword) {
             Alert.alert('Error', 'Passwords do not match');
             return;
         }
-        Alert.alert('Signup Info', `Username: ${username}\nEmail: ${email}\nPassword: ${password}`);
-        // Logic to Sign up User
-        // for example, by calling an API or performing some action.
-    };
+        const userData={
+            email: email,
+            password: password
+        };
+        axios.post("http://10.113.79.205:8083/register", userData)
+        .then(res => console.log(res.data))
+        .catch(e => console.log(e));
+
+
+    }; 
+
+
 
     return (
         <View style={styles.container}>

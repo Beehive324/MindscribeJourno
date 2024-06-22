@@ -2,6 +2,7 @@ const e = require("express");
 const express=require("express");
 const app=express();
 const mongoose= require("mongoose");
+app.use(express.json());
 
 const mongoUrl="mongodb+srv://fairson123:admin@cluster0.wrd9mty.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
 
@@ -20,7 +21,7 @@ app.get("/",(req, res)=>{
 });
 
 app.post('/register', async(req,res)=>{
-    const {name, email, password}=req.body;
+    const {email, password}=req.body;
 
     const oldUser= await User.findOne({email:email});
 
@@ -30,7 +31,6 @@ app.post('/register', async(req,res)=>{
  
     try {
         await User.create({
-            name: name,
             email: email,
             password: password
         });
