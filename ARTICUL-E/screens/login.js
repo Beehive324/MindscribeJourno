@@ -29,6 +29,9 @@ const Login = ({ navigation }) => {
             <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
                 <Text style={styles.signUpText}>Don't have an account? Sign Up</Text>
             </TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.navigate('Record')}>
+                <Text style={styles.signUpText}>Continue without an account</Text>
+            </TouchableOpacity>
         </View>
     );
 };

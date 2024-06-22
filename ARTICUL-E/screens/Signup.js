@@ -49,6 +49,9 @@ export default function Signup({ navigation}) {
             <TouchableOpacity onPress={handlePress}>
                 <Text style={styles.signInText}>Already got an account? Sign In</Text>
             </TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.navigate('Record')}>
+                <Text style={styles.signInText}>Continue without an account</Text>
+            </TouchableOpacity>
         </View>
     );
 };
