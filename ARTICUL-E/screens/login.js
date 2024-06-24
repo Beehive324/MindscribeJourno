@@ -1,23 +1,33 @@
-// Login.js
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, Button, Alert, TouchableOpacity } from 'react-native';
 import CustomInput from './Components/CustomInput';
+import axios from 'axios';
 
 const Login = ({ navigation }) => {
-    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
     const onLoginPressed = () => {
-        Alert.alert('Login Info', `Username: ${username}\nPassword: ${password}`);
+        Alert.alert('Login Info', `Email: ${username}\nPassword: ${password}`);
     };
+
+    function handleSumbit() {
+        console.log(email, password);
+        const UserData = {
+            email: email,
+            password,
+        };
+        axios.post("http://10.113.79.205:8082/login", UserData)
+        .then(res=>console.log(res.data))
+    }
 
     return (
         <View style={styles.container}>
             <Text style={styles.title}>Login</Text>
             <CustomInput 
                 placeholder="Email" 
-                value={username} 
-                setValue={setUsername} 
+                value={email} 
+                setValue={setEmail} 
             />
             <CustomInput 
                 placeholder="Password" 
@@ -25,7 +35,7 @@ const Login = ({ navigation }) => {
                 setValue={setPassword} 
                 secureTextEntry={true}
             />
-            <Button title="Login" onPress={onLoginPressed} />
+            <Button title="Login" onPress={handleSumbit} />
             <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
                 <Text style={styles.signUpText}>Don't have an account? Sign Up</Text>
             </TouchableOpacity>
