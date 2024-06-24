@@ -6,6 +6,7 @@ import Record from './screens/Record';
 import Login from './screens/login'; 
 import SplashScreen from './screens/Splashscreen'; 
 import Signup from './screens/Signup';
+import Welcome from './screens/Welcome';
 
 const Stack = createNativeStackNavigator();
 
@@ -24,6 +25,7 @@ export default function App() {
         <SplashScreen />
       ) : (
         <Stack.Navigator>
+          <Stack.Screen name="Welcome" component={Welcome} />
           <Stack.Screen name="Login" component={Login} />
           <Stack.Screen name="Signup" component={Signup} />
           <Stack.Screen name="Record" component={Record} />
