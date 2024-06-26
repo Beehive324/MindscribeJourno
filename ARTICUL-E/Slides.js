@@ -2,14 +2,14 @@ export default [
 
     {
         id: 1,
-        title: 'Practice your Speech using Articul-e',
+        title: 'Practice your Speech',
         description: 'Articul-e transforms your speech practice into an engaging and effective experience. Whether preparing for a presentation, public speaking event, or enhancing everyday communication.',
         image: require('./assets/undraw_Recording_re_5xyq.png')
     },
     {
         id: 2,
         title: 'Improve your Vocal Image',
-        description: 'Articul-e is your go-to app for refining your vocal presence and impact. With tailored exercises and feedback, Articul-e helps you improve clarity, tone, and delivery. Perfect for professionals, public speakers, and anyone looking to boost their vocal confidence.Transform your voice with Articul-e.',
+        description: 'Articul-e is your go-to app for refining your vocal presence and impact. With tailored exercises and feedback, Articul-e helps you improve clarity, tone, and delivery.',
         image: require('./assets/undraw_candidate_ubwv.png')
 
     },
