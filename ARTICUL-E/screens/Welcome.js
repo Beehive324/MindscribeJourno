@@ -33,7 +33,7 @@ const Welcome = ({navigation}) => {
             
             />
             <Paginator data={Slides} scrollX={scrollX}></Paginator>
-            <Button style={styles.Button} title="Get Started" onPress={() =>navigation.navigate("Login")} />
+            <Button style={styles.button} title="Get Started" onPress={() =>navigation.navigate("Login")} />
 
         </View>
         
@@ -58,6 +58,9 @@ const styles = StyleSheet.create({
     button: {
         marginBottom: 100,
         position: 40,
+        flex: 1,
+        
+        
     },
     
 });

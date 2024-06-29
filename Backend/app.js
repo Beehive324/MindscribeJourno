@@ -7,6 +7,8 @@ const cors = require('cors');
 const app = express();
 app.use(express.json());
 app.use(cors());
+const IP_ADDRESS = '10.113.79.205';
+const PORT = 8083;
 
 
 const mongoUrl="mongodb+srv://fairson123:admin@cluster0.wrd9mty.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
@@ -20,9 +22,9 @@ mongoose.connect(mongoUrl).then(()=>{
     console.log(e);
 });
 
-require('./Userdetails')
+require('./Userdetails');
 
-const User = mongoose.model("UserInfo");
+const User = mongoose.model("UserData");
 app.get("/",(req, res)=>{
     res.send({status:"Started"})
 });
@@ -71,14 +73,10 @@ app.post("/login", async(req, res)=>{
             return res.send({ error: "error"});
         }
 
-
-
     }
-
 
 });
 
-
-app.listen(5001, ()=> {
+app.listen(PORT, IP_ADDRESS, ()=> {
     console.log("Node js server started.");
 });
