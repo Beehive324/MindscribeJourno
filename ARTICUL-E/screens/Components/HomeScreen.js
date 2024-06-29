@@ -2,6 +2,9 @@ import React from "react";
 import { Text, View } from 'react-native';
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
+import { useState, useEffect } from "react";
+import { Button } from "react-native";
 
 function Home() {
     return (
@@ -20,13 +23,10 @@ function Profile() {
 }
 
 function NewRecording() {
-    return (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center'}} >
-            <Text>Record!</Text>
-        </View>
-    );
-}
-
+    const navigation = useNavigation();
+    navigation.navigate('Record'); // Navigate to the "Record" screen in the stack navigator
+    
+  }
 function SettingsScreen() {
     return (
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center'}} >
