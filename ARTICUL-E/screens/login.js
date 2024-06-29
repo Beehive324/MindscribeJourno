@@ -7,18 +7,23 @@ const Login = ({ navigation }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    const onLoginPressed = () => {
-        Alert.alert('Login Info', `Email: ${username}\nPassword: ${password}`);
-    };
-
     function handleSumbit() {
         console.log(email, password);
-        const UserData = {
+        const userData = {
             email: email,
-            password,
+            password: password,
         };
-        axios.post("http://10.113.79.205:8082/login", UserData)
-        .then(res=>console.log(res.data))
+
+        axios.post("http://10.113.79.205:8082/login", userData)
+            .then(response => {
+                console.log(response.data);
+                Alert.alert('Login Successful');
+                navigation.navigate("HomeScreen"); // Navigate here on successful login
+            })
+            .catch(error => {
+                console.error('Login Error:', error);
+                Alert.alert('Login Failed', 'Invalid credentials. Please try again.');
+            });
     }
 
     return (
