@@ -1,9 +1,12 @@
 import React, {useState, useRef} from 'react';
 import CustomInput from './Components/CustomInput';
-import { View, Text, StyleSheet, Button, Alert, TouchableOpacity, FlatList, Animated } from 'react-native';
+import { View, Text, StyleSheet, Alert, TouchableOpacity, FlatList, Animated, Button} from 'react-native';
 import Slides from '../Slides';
 import OnbardingItem from '../OnboardingItem'
 import Paginator from './Paginator';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
+
+
 
 const Welcome = ({navigation}) => {
 
@@ -33,6 +36,7 @@ const Welcome = ({navigation}) => {
             
             />
             <Paginator data={Slides} scrollX={scrollX}></Paginator>
+            
             <Button style={styles.button} title="Get Started" onPress={() =>navigation.navigate("Login")} />
 
         </View>
@@ -59,6 +63,8 @@ const styles = StyleSheet.create({
         marginBottom: 100,
         position: 40,
         flex: 1,
+        marginTop: 10,
+    
         
         
     },

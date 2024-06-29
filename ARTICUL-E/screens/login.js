@@ -14,15 +14,15 @@ const Login = ({ navigation }) => {
             password: password,
         };
 
-        axios.post("http://10.113.79.205:8082/login", userData)
-            .then(response => {
-                console.log(response.data);
+        axios
+        .post("http://10.113.79.205:8083/login", userData)
+            .then(res => {console.log(res.data)
+            if(res.data.status=="ok"){
                 Alert.alert('Login Successful');
                 navigation.navigate("HomeScreen"); // Navigate here on successful login
-            })
-            .catch(error => {
-                console.error('Login Error:', error);
-                Alert.alert('Login Failed', 'Invalid credentials. Please try again.');
+            } else {
+                Alert.alert('Login Unsuccessful');
+            }
             });
     }
 
