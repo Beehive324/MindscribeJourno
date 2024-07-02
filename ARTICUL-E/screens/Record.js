@@ -141,13 +141,6 @@ export default function Record({ navigation }) {
       <View style={styles.mainContent}>
         <View style={styles.headerContainer}>
           <Text style={[styles.header, nightMode && styles.headerDark]}>All Recordings</Text>
-          <Switch
-            value={nightMode}
-            onValueChange={(value) => setNightMode(value)}
-            style={styles.switch}
-            thumbColor={nightMode ? '#f5dd4b' : '#f4f3f4'}
-            ios_backgroundColor="#3e3e3e"
-          />
         </View>
         <ScrollView style={styles.scrollView}>
           {getRecordingLines()}

@@ -6,6 +6,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Record from '../Record';
 import { useNavigation, navigation } from '@react-navigation/native';
 import Settings from './Settings';
+import { Home } from './Home';
 
 function Setting() {
   return (
@@ -15,9 +16,7 @@ function Setting() {
 
 function Profile() {
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Profile!</Text>
-    </View>
+    <Home color="#0891b2" navigation={navigation} />
   );
 }
 
@@ -38,10 +37,10 @@ export default function MyTabs() {
       }}
     >
         <Tab.Screen
-        name="Profile"
+        name="Home"
         component={Profile}
         options={{
-          tabBarLabel: 'Profile',
+          tabBarLabel: 'Home',
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="account" color={color} size={size} />
           ),
