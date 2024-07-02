@@ -23,7 +23,7 @@ const Welcome = ({navigation}) => {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Articul-e</Text>
+            <Text style={styles.title}></Text>
             <FlatList data={Slides} renderItem={({item}) => <OnbardingItem item={item} />} 
 
             horizontal

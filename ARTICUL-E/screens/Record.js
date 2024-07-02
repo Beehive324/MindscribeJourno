@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Button, ScrollView, StyleSheet, Alert, Pressable, Animated } from 'react-native';
+import { View, Text, Button, ScrollView, StyleSheet, Alert, Pressable, Animated, TextInput } from 'react-native';
 import { Audio } from 'expo-av';
 import { Menu, MenuOptions, MenuOption, MenuTrigger } from 'react-native-popup-menu';
 import { GestureHandlerRootView, Swipeable } from 'react-native-gesture-handler';
@@ -112,9 +112,9 @@ export default function Record({ navigation }) {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <View style={styles.container}>
+        <Text style={styles.header}>All Recordings</Text>
         <ScrollView style={styles.scrollView}>
           {getRecordingLines()}
-          <View style={styles.inputContainer}></View>
         </ScrollView>
         <View style={styles.footer}>
           <Pressable
@@ -133,9 +133,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#FFFFFF',
-    alignItems: 'center',
-    justifyContent: 'center',
     padding: 20,
+  },
+  header: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 40,
+    marginTop: 50,
+    textAlign: 'center',
   },
   recordingCount: {
     fontSize: 18,

@@ -22,15 +22,15 @@ function Profile() {
   );
 }
 
-function Create({navigation}) {
-  return (
-    <Record></Record>
-  );
-}
-
+function Create({ navigation }) {
+    return (
+      <Record navigation={navigation} />
+    );
+  }
+  
 const Tab = createBottomTabNavigator();
 
-function MyTabs() {
+export default function MyTabs() {
   return (
     <Tab.Navigator
       initialRouteName="Feed"
@@ -46,6 +46,7 @@ function MyTabs() {
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="account" color={color} size={size} />
           ),
+          headerShown: false,
         }}
       />
       <Tab.Screen
@@ -56,6 +57,7 @@ function MyTabs() {
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="plus-box" color={color} size={size} />
           ),
+          headerShown: false,
         }}
       />
       <Tab.Screen
@@ -66,6 +68,7 @@ function MyTabs() {
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="cog-outline" color={color} size={size} />
           ),
+          headerShown: false,
         }}
       />
       
@@ -73,10 +76,3 @@ function MyTabs() {
   );
 }
 
-export default function HomeScreen() {
-  return (
-    
-      <MyTabs />
-    
-  );
-}

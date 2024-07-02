@@ -29,11 +29,11 @@ export default function App() {
         <SplashScreen />
       ) : (
         <Stack.Navigator>
-          <Stack.Screen name="Welcome" component={Welcome} />
-          <Stack.Screen name="Login" component={Login} />
-          <Stack.Screen name="Signup" component={Signup} />
-          <Stack.Screen name="Record" component={Record} />
-          <Stack.Screen name="HomeScreen" component={HomeScreen} />
+          <Stack.Screen name="Welcome" component={Welcome} options={{headerShown: false}} />
+          <Stack.Screen name="Login" component={Login} options={{headerShown: false}} />
+          <Stack.Screen name="Signup" component={Signup} options={{headerShown: false}} />
+          <Stack.Screen name="Record" component={Record} options={{headerShown: false}}/>
+          <Stack.Screen name="HomeScreen" component={HomeScreen} options={{headerShown: false}} />
           <Stack.Screen name="PlayBackScreen" component={PlaybackScreen} />
         </Stack.Navigator>
       )}
