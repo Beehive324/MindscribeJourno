@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Button, ScrollView, StyleSheet, Alert, Pressable, Animated, TextInput } from 'react-native';
+import { View, Text, Button, ScrollView, StyleSheet, Alert, Pressable, Animated, TextInput, Switch } from 'react-native';
 import { Audio } from 'expo-av';
 import { Menu, MenuOptions, MenuOption, MenuTrigger } from 'react-native-popup-menu';
 import { GestureHandlerRootView, Swipeable } from 'react-native-gesture-handler';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 export default function Record({ navigation }) {
   const [recording, setRecording] = useState();
   const [recordings, setRecordings] = useState([]);
   const [title, setTitle] = useState('');
+  const [nightMode, setNightMode] = useState(false); // State for night mode
 
   useEffect(() => {
     Audio.requestPermissionsAsync();
@@ -56,17 +58,24 @@ export default function Record({ navigation }) {
   }
 
   function deleteRecording(index) {
+    const updatedRecordings = [...recordings];
+    updatedRecordings.splice(index, 1);
+    setRecordings(updatedRecordings);
+  }
+
+  function playRecording(recordingLine) {
     Alert.alert(
-      'Delete Recording',
-      'Are you sure you want to delete this recording?',
+      'Play Recording',
+      'Do you want to play this recording?',
       [
         { text: 'Cancel', style: 'cancel' },
         {
-          text: 'Delete',
-          style: 'destructive',
+          text: 'Play',
           onPress: () => {
-            const updatedRecordings = recordings.filter((_, i) => i !== index);
-            setRecordings(updatedRecordings);
+            navigation.navigate('PlayBackScreen', {
+              recordingUri: recordingLine.file,
+              recordingTitle: recordingLine.title || 'Recording',
+            });
           },
         },
       ],
@@ -74,30 +83,48 @@ export default function Record({ navigation }) {
     );
   }
 
-  function playRecording(recordingLine) {
-    navigation.navigate('PlayBackScreen', {
-      recordingUri: recordingLine.file,
-      recordingTitle: recordingLine.title || 'Recording',
-    });
-  }
-
   function getRecordingLines() {
     return recordings.map((recordingLine, index) => (
       <Swipeable
         key={index}
         renderRightActions={() => (
-          <View style={styles.deleteButton}>
-            <Button title="Delete" color="white" onPress={() => deleteRecording(index)} />
+          <View style={styles.swipeableActions}>
+            <Pressable onPress={() => playRecording(recordingLine)}>
+              <MaterialCommunityIcons name="play" size={24} color="#4CAF50" style={styles.actionIcon} />
+            </Pressable>
+            <Pressable onPress={() => deleteRecording(index)}>
+              <MaterialCommunityIcons name="delete" size={24} color="#F44336" style={styles.actionIcon} />
+            </Pressable>
           </View>
         )}
+        renderLeftActions={(progress, dragX) => {
+          const scale = dragX.interpolate({
+            inputRange: [0, 100],
+            outputRange: [0, 1],
+            extrapolate: 'clamp',
+          });
+          return (
+            <Animated.View style={[styles.deleteButtonContainer, { transform: [{ scale }] }]}>
+              <Pressable style={styles.deleteButton} onPress={() => deleteRecording(index)}>
+                <MaterialCommunityIcons name="delete" size={24} color="#FFFFFF" />
+              </Pressable>
+            </Animated.View>
+          );
+        }}
+        onSwipeableLeftOpen={() => deleteRecording(index)}
       >
-        <View style={styles.row}>
-          <Text style={styles.fill}>
-            {recordingLine.title || `Recording ${index + 1}`} | {recordingLine.duration} | {recordingLine.date}
-          </Text>
+        <View style={[styles.recordingContainer, nightMode && styles.recordingContainerDark]}>
+          <View style={styles.recordingInfo}>
+            <Text style={[styles.recordingTitle, nightMode && styles.recordingTitleDark]}>
+              {recordingLine.title || `Recording ${index + 1}`}
+            </Text>
+            <Text style={[styles.recordingDuration, nightMode && styles.recordingDurationDark]}>
+              {recordingLine.duration} | {recordingLine.date}
+            </Text>
+          </View>
           <Menu>
             <MenuTrigger>
-              <Text style={styles.moreOptions}>⋮</Text>
+              <MaterialCommunityIcons name="dots-vertical" size={24} color="#666666" style={styles.moreOptionsIcon} />
             </MenuTrigger>
             <MenuOptions>
               <MenuOption onSelect={() => playRecording(recordingLine)} text="Play" />
@@ -110,20 +137,29 @@ export default function Record({ navigation }) {
   }
 
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
-      <View style={styles.container}>
-        <Text style={styles.header}>All Recordings</Text>
+    <GestureHandlerRootView style={[styles.container, nightMode && styles.containerDark]}>
+      <View style={styles.mainContent}>
+        <View style={styles.headerContainer}>
+          <Text style={[styles.header, nightMode && styles.headerDark]}>All Recordings</Text>
+          <Switch
+            value={nightMode}
+            onValueChange={(value) => setNightMode(value)}
+            style={styles.switch}
+            thumbColor={nightMode ? '#f5dd4b' : '#f4f3f4'}
+            ios_backgroundColor="#3e3e3e"
+          />
+        </View>
         <ScrollView style={styles.scrollView}>
           {getRecordingLines()}
         </ScrollView>
-        <View style={styles.footer}>
-          <Pressable
-            style={styles.recordButton}
-            onPress={recording ? stopRecording : startRecording}
-          >
-            <Animated.View style={[styles.redCircle]} />
-          </Pressable>
-        </View>
+      </View>
+      <View style={styles.footer}>
+        <Pressable
+          style={[styles.recordButton, nightMode && styles.recordButtonDark]}
+          onPress={recording ? stopRecording : startRecording}
+        >
+          <Animated.View style={[styles.redCircle]} />
+        </Pressable>
       </View>
     </GestureHandlerRootView>
   );
@@ -135,63 +171,66 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     padding: 20,
   },
+  containerDark: {
+    backgroundColor: '#121212',
+  },
+  mainContent: {
+    flex: 1,
+    marginTop: 50,
+  },
+  headerContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 20,
+  },
   header: {
     fontSize: 24,
     fontWeight: 'bold',
-    marginBottom: 40,
-    marginTop: 50,
     textAlign: 'center',
   },
-  recordingCount: {
+  headerDark: {
+    color: '#FFFFFF',
+  },
+  switch: {
+    transform: [{ scaleX: 1.2 }, { scaleY: 1.2 }],
+  },
+  recordingContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: '#f0f0f0',
+    padding: 15,
+    borderRadius: 10,
+    marginBottom: 10,
+  },
+  recordingContainerDark: {
+    backgroundColor: '#2e2e2e',
+  },
+  recordingInfo: {
+    flex: 1,
+  },
+  recordingTitle: {
     fontSize: 18,
     fontWeight: 'bold',
-    marginBottom: 10,
-    textAlign: 'center',
+    marginBottom: 5,
   },
-  inputContainer: {
-    marginVertical: 20,
-    width: '100%',
-    alignItems: 'center',
+  recordingTitleDark: {
+    color: '#FFFFFF',
   },
-  input: {
-    height: 40,
-    borderColor: 'gray',
-    borderWidth: 1,
-    borderRadius: 5,
-    paddingHorizontal: 10,
-    width: '80%',
-    backgroundColor: '#FFFFFF',
+  recordingDuration: {
+    fontSize: 14,
+    color: '#666666',
   },
-  row: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginVertical: 10,
-    width: '100%',
-  },
-  fill: {
-    flex: 1,
-    marginHorizontal: 15,
+  recordingDurationDark: {
+    color: '#BBBBBB',
   },
   scrollView: {
     flex: 1,
     width: '100%',
   },
-  bottomContainer: {
-    padding: 10,
-    width: '100%',
-    position: 'absolute',
-    bottom: 0,
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    backgroundColor: '#FFFFFF',
-  },
-  moreOptions: {
-    fontSize: 20,
-    marginHorizontal: 10,
-  },
   footer: {
-    backgroundColor: 'white',
+    backgroundColor: 'transparent',
     height: 120,
     alignItems: 'center',
     justifyContent: 'center',
@@ -205,17 +244,38 @@ const styles = StyleSheet.create({
     padding: 3,
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: '#FFFFFF',
+  },
+  recordButtonDark: {
+    backgroundColor: '#121212',
   },
   redCircle: {
     backgroundColor: 'orangered',
     aspectRatio: 1,
     borderRadius: 30,
   },
-  deleteButton: {
-    backgroundColor: 'red',
-    justifyContent: 'center',
+  swipeableActions: {
+    flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-around',
     width: 80,
     height: '100%',
+  },
+  actionIcon: {
+    padding: 10,
+  },
+  moreOptionsIcon: {
+    padding: 10,
+  },
+  deleteButtonContainer: {
+    backgroundColor: '#F44336',
+    justifyContent: 'center',
+    alignItems: 'flex-end',
+    paddingRight: 20,
+    borderRadius: 10,
+    overflow: 'hidden',
+  },
+  deleteButton: {
+    padding: 15,
   },
 });
