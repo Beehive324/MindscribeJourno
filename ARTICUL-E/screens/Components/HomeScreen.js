@@ -5,12 +5,11 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Record from '../Record';
 import { useNavigation, navigation } from '@react-navigation/native';
+import Settings from './Settings';
 
-function Settings() {
+function Setting() {
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Settings</Text>
-    </View>
+    <Settings navigation={navigation} />
   );
 }
 
@@ -62,7 +61,7 @@ export default function MyTabs() {
       />
       <Tab.Screen
         name="Settings"
-        component={Settings}
+        component={Setting}
         options={{
           tabBarLabel: 'Settings',
           tabBarIcon: ({ color, size }) => (
