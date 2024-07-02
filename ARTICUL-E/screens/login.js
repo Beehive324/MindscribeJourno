@@ -28,7 +28,7 @@ const Login = ({ navigation }) => {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Login</Text>
+            <Text style={styles.title}>Articul-e</Text>
             <CustomInput 
                 placeholder="Email" 
                 value={email} 
@@ -40,7 +40,9 @@ const Login = ({ navigation }) => {
                 setValue={setPassword} 
                 secureTextEntry={true}
             />
-            <Button title="Login" onPress={handleSumbit} />
+            <TouchableOpacity style={styles.button} onPress={handleSumbit} >
+                <Text style={styles.appButtonTex}>Login</Text>
+            </TouchableOpacity>
             <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
                 <Text style={styles.signUpText}>Don't have an account? Sign Up</Text>
             </TouchableOpacity>
@@ -67,6 +69,20 @@ const styles = StyleSheet.create({
         color: 'blue',
         marginTop: 20,
     },
+    button: {
+        backgroundColor: "#007AFF",
+        borderRadius: 10,
+        paddingVertical: 10,
+        paddingHorizontal: 140,
+        marginTop: 18,
+        marginBottom: 20,        
+    },
+    appButtonTex: {
+        fontSize: 17,
+        color: "#fff",
+        fontWeight: "bold",
+        alignSelf: "center",
+    }
 });
 
 export default Login;

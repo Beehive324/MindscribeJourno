@@ -8,6 +8,7 @@ import { Colors } from 'react-native/Libraries/NewAppScreen';
 
 
 
+
 const Welcome = ({navigation}) => {
 
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -36,11 +37,10 @@ const Welcome = ({navigation}) => {
             
             />
             <Paginator data={Slides} scrollX={scrollX}></Paginator>
-            
-            <Button style={styles.button} title="Get Started" onPress={() =>navigation.navigate("Login")} />
-
+            <TouchableOpacity style={styles.button} onPress={() =>navigation.navigate("Login")} >
+                <Text style={styles.appButtonTex}>Get Started</Text>
+            </TouchableOpacity>
         </View>
-        
     );
 };
 
@@ -60,14 +60,18 @@ const styles = StyleSheet.create({
         color: "black",
     },
     button: {
-        marginBottom: 100,
-        position: 40,
-        flex: 1,
-        marginTop: 10,
-    
-        
-        
+        backgroundColor: "#007AFF",
+        borderRadius: 10,
+        paddingVertical: 10,
+        paddingHorizontal: 70,
+        marginBottom: 30,        
     },
+    appButtonTex: {
+        fontSize: 18,
+        color: "#fff",
+        fontWeight: "bold",
+        alignSelf: "center",
+    }
     
 });
 

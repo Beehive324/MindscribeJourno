@@ -1,49 +1,82 @@
-import React from "react";
+import * as React from 'react';
 import { Text, View } from 'react-native';
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { NavigationContainer } from "@react-navigation/native";
-import { useNavigation } from "@react-navigation/native";
-import { useState, useEffect } from "react";
-import { Button } from "react-native";
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import Record from '../Record';
+import { useNavigation, navigation } from '@react-navigation/native';
 
-function Home() {
-    return (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center'}} >
-            <Text>Home!</Text>
-        </View>
-    );
+function Settings() {
+  return (
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <Text>Settings</Text>
+    </View>
+  );
 }
 
 function Profile() {
-    return (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center'}} >
-            <Text>Profile</Text>
-        </View>
-    );
+  return (
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <Text>Profile!</Text>
+    </View>
+  );
 }
 
-function NewRecording() {
-    const navigation = useNavigation();
-    navigation.navigate('Record'); // Navigate to the "Record" screen in the stack navigator
-    
-  }
-function SettingsScreen() {
-    return (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center'}} >
-            <Text>Settings</Text>
-        </View>
-    );
+function Create({navigation}) {
+  return (
+    <Record></Record>
+  );
 }
 
 const Tab = createBottomTabNavigator();
 
+function MyTabs() {
+  return (
+    <Tab.Navigator
+      initialRouteName="Feed"
+      screenOptions={{
+        tabBarActiveTintColor: '#e91e63',
+      }}
+    >
+        <Tab.Screen
+        name="Profile"
+        component={Profile}
+        options={{
+          tabBarLabel: 'Profile',
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="account" color={color} size={size} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="New Recording"
+        component={Create}
+        options={{
+          tabBarLabel: 'New Recording',
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="plus-box" color={color} size={size} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Settings"
+        component={Settings}
+        options={{
+          tabBarLabel: 'Settings',
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="cog-outline" color={color} size={size} />
+          ),
+        }}
+      />
+      
+    </Tab.Navigator>
+  );
+}
+
 export default function HomeScreen() {
-    return (
-            <Tab.Navigator>
-                <Tab.Screen name="Home" component={Home} />
-                <Tab.Screen name="Record" component={NewRecording} />
-                <Tab.Screen name="Settings" component={SettingsScreen} />
-                <Tab.Screen name="Profile" component={Profile} />
-            </Tab.Navigator>
-    );
+  return (
+    
+      <MyTabs />
+    
+  );
 }

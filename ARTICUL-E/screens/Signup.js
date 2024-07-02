@@ -56,7 +56,7 @@ export default function Signup({ navigation}) {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Signup</Text>
+            <Text style={styles.title}>Articul-e</Text>
             <CustomInput 
                 placeholder="Email" 
                 value={email} 
@@ -74,7 +74,9 @@ export default function Signup({ navigation}) {
                 setValue={setConfirmPassword} 
                 secureTextEntry
             />
-            <Button title="Signup" onPress={handleSubmit} />
+            <TouchableOpacity style={styles.button} onPress={handleSubmit} >
+                <Text style={styles.appButtonTex}>Signup</Text>
+            </TouchableOpacity>
             <TouchableOpacity onPress={handlePress}>
                 <Text style={styles.signInText}>Already got an account? Sign In</Text>
             </TouchableOpacity>
@@ -101,4 +103,18 @@ const styles = StyleSheet.create({
         color: 'blue',
         marginTop: 20,
     },
+    button: {
+        backgroundColor: "#007AFF",
+        borderRadius: 10,
+        paddingVertical: 10,
+        paddingHorizontal: 140,
+        marginTop: 18,
+        marginBottom: 8,        
+    },
+    appButtonTex: {
+        fontSize: 17,
+        color: "#fff",
+        fontWeight: "bold",
+        alignSelf: "center",
+    }
 });

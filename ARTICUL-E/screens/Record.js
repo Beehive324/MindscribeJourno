@@ -1,20 +1,25 @@
-import React from 'react';
-import { StyleSheet, Text, View, Button, TextInput, ScrollView } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, Button, ScrollView, StyleSheet, Alert, Pressable, Animated } from 'react-native';
 import { Audio } from 'expo-av';
-import axios from 'axios';
+import { Menu, MenuOptions, MenuOption, MenuTrigger } from 'react-native-popup-menu';
+import { GestureHandlerRootView, Swipeable } from 'react-native-gesture-handler';
 
-export default function Record() {
-  const [recording, setRecording] = React.useState();
-  const [recordings, setRecordings] = React.useState([]);
-  const [title, setTitle] = React.useState('');
+export default function Record({ navigation }) {
+  const [recording, setRecording] = useState();
+  const [recordings, setRecordings] = useState([]);
+  const [title, setTitle] = useState('');
+
+  useEffect(() => {
+    Audio.requestPermissionsAsync();
+  }, []);
 
   async function startRecording() {
     try {
       const perm = await Audio.requestPermissionsAsync();
-      if (perm.status === "granted") {
+      if (perm.status === 'granted') {
         await Audio.setAudioModeAsync({
           allowsRecordingIOS: true,
-          playsInSilentModeIOS: true
+          playsInSilentModeIOS: true,
         });
         const { recording } = await Audio.Recording.createAsync(Audio.RECORDING_OPTIONS_PRESET_HIGH_QUALITY);
         setRecording(recording);
@@ -26,7 +31,6 @@ export default function Record() {
 
   async function stopRecording() {
     setRecording(undefined);
-
     await recording.stopAndUnloadAsync();
     const { sound, status } = await recording.createNewLoadedSoundAsync();
     const uri = recording.getURI();
@@ -35,18 +39,11 @@ export default function Record() {
       duration: getDurationFormatted(status.durationMillis),
       file: uri,
       title: title,
-      date: new Date().toLocaleDateString()
+      date: new Date().toLocaleDateString(),
     };
-    
-    
 
     setRecordings([...recordings, newRecording]);
     setTitle('');
-  }
-
-  async function analyzeRecording(uri) {
-    {/* Insert mood analasys machine learning Model Here */}
-
   }
 
   function getDurationFormatted(milliseconds) {
@@ -58,33 +55,77 @@ export default function Record() {
     return seconds < 10 ? `${minutes}:0${seconds}` : `${minutes}:${seconds}`;
   }
 
+  function deleteRecording(index) {
+    Alert.alert(
+      'Delete Recording',
+      'Are you sure you want to delete this recording?',
+      [
+        { text: 'Cancel', style: 'cancel' },
+        {
+          text: 'Delete',
+          style: 'destructive',
+          onPress: () => {
+            const updatedRecordings = recordings.filter((_, i) => i !== index);
+            setRecordings(updatedRecordings);
+          },
+        },
+      ],
+      { cancelable: true }
+    );
+  }
+
+  function playRecording(recordingLine) {
+    navigation.navigate('PlayBackScreen', {
+      recordingUri: recordingLine.file,
+      recordingTitle: recordingLine.title || 'Recording',
+    });
+  }
+
   function getRecordingLines() {
     return recordings.map((recordingLine, index) => (
-      <View key={index} style={styles.row}>
-        <Text style={styles.fill}>
-          {recordingLine.title || `Recording ${index + 1}`} | {recordingLine.duration} | {recordingLine.date}
-        </Text>
-        <Button onPress={() => recordingLine.sound.replayAsync()} title="Play" color="#1E90FF"></Button>
-      </View>
+      <Swipeable
+        key={index}
+        renderRightActions={() => (
+          <View style={styles.deleteButton}>
+            <Button title="Delete" color="white" onPress={() => deleteRecording(index)} />
+          </View>
+        )}
+      >
+        <View style={styles.row}>
+          <Text style={styles.fill}>
+            {recordingLine.title || `Recording ${index + 1}`} | {recordingLine.duration} | {recordingLine.date}
+          </Text>
+          <Menu>
+            <MenuTrigger>
+              <Text style={styles.moreOptions}>⋮</Text>
+            </MenuTrigger>
+            <MenuOptions>
+              <MenuOption onSelect={() => playRecording(recordingLine)} text="Play" />
+              <MenuOption onSelect={() => deleteRecording(index)} text="Delete" />
+            </MenuOptions>
+          </Menu>
+        </View>
+      </Swipeable>
     ));
   }
 
-  function clearRecordings() {
-    setRecordings([]);
-  }
-
   return (
-    <View style={styles.container}>
-      <ScrollView style={styles.scrollView}>
-        {getRecordingLines()}
-        <View style={styles.inputContainer}>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <View style={styles.container}>
+        <ScrollView style={styles.scrollView}>
+          {getRecordingLines()}
+          <View style={styles.inputContainer}></View>
+        </ScrollView>
+        <View style={styles.footer}>
+          <Pressable
+            style={styles.recordButton}
+            onPress={recording ? stopRecording : startRecording}
+          >
+            <Animated.View style={[styles.redCircle]} />
+          </Pressable>
         </View>
-      </ScrollView>
-      <View style={styles.bottomContainer}>
-        <Button title={recording ? 'Stop Recording' : 'Start Recording'} onPress={recording ? stopRecording : startRecording} color="#1E90FF" />
-        {recordings.length > 0 && <Button title="Clear Recordings" onPress={clearRecordings} color="#FF4500" />}
       </View>
-    </View>
+    </GestureHandlerRootView>
   );
 }
 
@@ -139,5 +180,37 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     backgroundColor: '#FFFFFF',
+  },
+  moreOptions: {
+    fontSize: 20,
+    marginHorizontal: 10,
+  },
+  footer: {
+    backgroundColor: 'white',
+    height: 120,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  recordButton: {
+    borderRadius: 60,
+    width: 60,
+    height: 60,
+    borderWidth: 3,
+    borderColor: 'gray',
+    padding: 3,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  redCircle: {
+    backgroundColor: 'orangered',
+    aspectRatio: 1,
+    borderRadius: 30,
+  },
+  deleteButton: {
+    backgroundColor: 'red',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 80,
+    height: '100%',
   },
 });

@@ -3,11 +3,13 @@ import { View, StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Record from './screens/Record';
+import { MenuProvider } from 'react-native-popup-menu';
 import Login from './screens/login'; 
 import SplashScreen from './screens/Splashscreen'; 
 import Signup from './screens/Signup';
 import Welcome from './screens/Welcome';
 import HomeScreen from './screens/Components/HomeScreen';
+import PlaybackScreen from './screens/Components/PlaybackScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -18,9 +20,10 @@ export default function App() {
     setTimeout(() => {
       setIsShowSplashScreen(false);
     }, 3000);
-  }, []); // Empty dependency array to run only once
+  }, []);
 
   return (
+    <MenuProvider>
     <NavigationContainer>
       {isShowSplashScreen ? (
         <SplashScreen />
@@ -31,9 +34,11 @@ export default function App() {
           <Stack.Screen name="Signup" component={Signup} />
           <Stack.Screen name="Record" component={Record} />
           <Stack.Screen name="HomeScreen" component={HomeScreen} />
+          <Stack.Screen name="PlayBackScreen" component={PlaybackScreen} />
         </Stack.Navigator>
       )}
     </NavigationContainer>
+    </MenuProvider>
   );
 }
 
