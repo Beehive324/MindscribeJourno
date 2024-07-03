@@ -31,7 +31,7 @@ app.get("/",(req, res)=>{
 
 app.post('/register', async(req,res)=>{
     console.log("registration request:", req.body);
-    const {email, password}=req.body;
+    const {email,username, password}=req.body;
 
     const oldUser= await User.findOne({email:email});
 
@@ -45,6 +45,7 @@ app.post('/register', async(req,res)=>{
     try {
         await User.create({
             email: email,
+            username: username,
             password: encryptedPassword
         });
         res.send({status: "ok", data: "User Created"})

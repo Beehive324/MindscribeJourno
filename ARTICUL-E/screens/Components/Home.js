@@ -1,10 +1,16 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
-import { NavigationContainer, navigation } from '@react-navigation/native';
+import { NavigationContainer, useNavigation } from '@react-navigation/native'; // Adjusted imports
 import React from 'react';
 
-export const Home = ({ color, navigation }) => {
+
+export const Home = ({ color }) => {
+  const navigation = useNavigation(); // Use useNavigation hook to get navigation object
+
   return (
     <ScrollView contentContainerStyle={styles.container}>
+      <View style={styles.headerContainer}>
+        <Text style={[styles.header]}>Home</Text>
+      </View>
       {
         [
           { label: 'Total Recordings', opacity: 1, navigateTo: 'Record' },
@@ -13,7 +19,7 @@ export const Home = ({ color, navigation }) => {
         ].map(({ label, opacity, navigateTo }) => (
           <TouchableOpacity
             key={label}
-            onPress={() => navigation.navigate(navigateTo)}
+            onPress={() => navigation.navigate(navigateTo)} // Use navigation object obtained from useNavigation
           >
             <View
               style={[styles.color, { backgroundColor: color, opacity }]}
@@ -44,6 +50,23 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 18,
     fontWeight: 'bold',
-  }
+  },
+  headerContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: -45,
+  },
+  header: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginTop: 30,
+  },
+  container: {
+    flex: 1,
+    backgroundColor: '#FFFFFF',
+    padding: 20,
+  },
 });
     

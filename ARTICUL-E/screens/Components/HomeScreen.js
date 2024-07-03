@@ -7,11 +7,18 @@ import Record from '../Record';
 import { useNavigation, navigation } from '@react-navigation/native';
 import Settings from './Settings';
 import { Home } from './Home';
+import Progress from './Progress';
 
 function Setting() {
   return (
     <Settings navigation={navigation} />
   );
+}
+
+function Progression() {
+  return (
+    <Progress navigation={navigation} />
+  )
 }
 
 function Profile() {
@@ -54,6 +61,17 @@ export default function MyTabs() {
           tabBarLabel: 'New Recording',
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="plus-box" color={color} size={size} />
+          ),
+          headerShown: false,
+        }}
+      />
+      <Tab.Screen
+        name="Progress"
+        component={Progression}
+        options={{
+          tabBarLabel: 'Progress',
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="chart-timeline-variant" color={color} size={size} />
           ),
           headerShown: false,
         }}

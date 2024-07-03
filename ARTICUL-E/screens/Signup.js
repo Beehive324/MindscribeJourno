@@ -11,6 +11,7 @@ export default function Signup({ navigation}) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+    const [username, setUsername] = useState('');
 
     const handlePress = () => {
         navigation.navigate("Login");
@@ -33,6 +34,7 @@ export default function Signup({ navigation}) {
 
         const userData = {
             email: email,
+            username: username,
             password: password
         };
 
@@ -61,6 +63,11 @@ export default function Signup({ navigation}) {
                 placeholder="Email" 
                 value={email} 
                 setValue={setEmail} 
+            />
+            <CustomInput 
+                placeholder="Username" 
+                value={username} 
+                setValue={setUsername} 
             />
             <CustomInput 
                 placeholder="Password" 
@@ -104,7 +111,7 @@ const styles = StyleSheet.create({
         marginTop: 20,
     },
     button: {
-        backgroundColor: "#FFFFFF",
+        backgroundColor: "#007AFF",
         borderRadius: 10,
         paddingVertical: 10,
         paddingHorizontal: 140,
