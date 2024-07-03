@@ -10,8 +10,10 @@ import Signup from './screens/Signup';
 import Welcome from './screens/Welcome';
 import HomeScreen from './screens/Components/HomeScreen';
 import PlaybackScreen from './screens/Components/PlaybackScreen';
+import  {Home}  from './screens/Components/Home';
 
 const Stack = createNativeStackNavigator();
+
 
 export default function App() {
   const [isShowSplashScreen, setIsShowSplashScreen] = useState(true);
@@ -30,11 +32,12 @@ export default function App() {
       ) : (
         <Stack.Navigator>
           <Stack.Screen name="Welcome" component={Welcome} options={{headerShown: false}} />
+          <Stack.Screen name="Home" component={Home} options={{headerShown: false}} />
           <Stack.Screen name="Login" component={Login} options={{headerShown: false}} />
           <Stack.Screen name="Signup" component={Signup} options={{headerShown: false}} />
           <Stack.Screen name="Record" component={Record} options={{headerShown: false}}/>
           <Stack.Screen name="HomeScreen" component={HomeScreen} options={{headerShown: false}} />
-          <Stack.Screen name="PlayBackScreen" component={PlaybackScreen} />
+          <Stack.Screen name="PlayBackScreen" component={PlaybackScreen} options={{headerShown: false}} />
         </Stack.Navigator>
       )}
     </NavigationContainer>

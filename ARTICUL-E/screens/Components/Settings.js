@@ -23,6 +23,12 @@ const SECTIONS = [
             { id: 'save', icon: 'star', label: 'Favourites', type: 'link' },
         ],
     },
+    {
+        header: 'Account',
+        items: [
+            {id: 'logout', icon: 'user', label: 'Sign out', type: 'link'}
+        ]
+    }
 ];
 
 export default function Settings() {

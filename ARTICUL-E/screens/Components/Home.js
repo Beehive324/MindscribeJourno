@@ -1,21 +1,26 @@
-import { View, Text, ScrollView, StyleSheet } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
+import { NavigationContainer, navigation } from '@react-navigation/native';
 import React from 'react';
 
-export const Home = ({ color }) => {
+export const Home = ({ color, navigation }) => {
   return (
     <ScrollView contentContainerStyle={styles.container}>
       {
         [
-          { label: 'Total Recordings', opacity: 1 },
-          { label: 'Favourite Recordings', opacity: 0.8 },
-          { label: 'Analysis', opacity: 0.5 }
-        ].map(({ label, opacity }) => (
-          <View
+          { label: 'Total Recordings', opacity: 1, navigateTo: 'Record' },
+          { label: 'Favourite Recordings', opacity: 0.8, navigateTo: 'Record' },
+          { label: 'Analysis', opacity: 0.5, navigateTo: 'Record' }
+        ].map(({ label, opacity, navigateTo }) => (
+          <TouchableOpacity
             key={label}
-            style={[styles.color, { backgroundColor: color, opacity }]}
+            onPress={() => navigation.navigate(navigateTo)}
           >
-            <Text style={styles.text}>{label}</Text>
-          </View>
+            <View
+              style={[styles.color, { backgroundColor: color, opacity }]}
+            >
+              <Text style={styles.text}>{label}</Text>
+            </View>
+          </TouchableOpacity>
         ))
       }
     </ScrollView>
@@ -29,15 +34,16 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     marginBottom: 15,
     marginTop: 70,
-    padding: 15,  
+    padding: 15,
   },
   container: {
     paddingHorizontal: 20,
     paddingVertical: 20,
   },
   text: {
-    color: '#fff',         
-    fontSize: 18,          
-    fontWeight: 'bold',     
+    color: '#fff',
+    fontSize: 18,
+    fontWeight: 'bold',
   }
 });
+    
