@@ -9,6 +9,7 @@ const fs = require('fs');
 const { resolve } = require('path');
 const { error } = require('console');
 const multer = require('multer');
+const ffmpeg = require('fluent-ffmpeg');
 app.use(express.json());
 app.use(cors());
 const IP_ADDRESS = '10.113.79.205';
@@ -23,12 +24,15 @@ const mongoUrl="mongodb+srv://fairson123:admin@cluster0.wrd9mty.mongodb.net/?ret
 
 const JWT_SECRET = "sdfsdfsdfsdfsdf234234oinsdofn(090fs9df0sdf"
 
+
+
+
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-      cb(null, 'uploads/'); // Specify the directory where uploaded files should be stored
+      cb(null, 'uploads/');
     },
     filename: function (req, file, cb) {
-      cb(null, file.originalname); // Specify how the file should be named
+      cb(null, file.originalname);
     }
   });
   
@@ -49,44 +53,74 @@ app.get("/",(req, res)=>{
     res.send({status:"Started"})
 });
 
-
-async function transcribeAudio(filePath) {
-    const clinet = new speech.SpeechClient();
-    const file = fs.readFileSync(filePath);
-    const audioBytes = file.toString('base64')
-
-    const audio = {
-        cotent: audioBytes
-    };
-
-    const config = {
-        languageCode: 'en-UK'
-    }
-
-    const request = {
-        audio: audio,
-        config: config,
-    };
-
-    const [response] = await clinet.recognize(request);
-    const trancription = response.results
-        .map(result => result.alternatives[0].transcript)
-        .join('\n');
-    ;
-    return trancription
-
+async function convertToWav(inputPath, outputPath) {
+    return new Promise((resolve, reject) => {
+        ffmpeg(inputPath)
+        .toFormat('wav')
+        .on('end', () => resolve(outputPath))
+        .on('error', reject)
+        .save(outputPath)
+    });
 }
 
-app.post('/transcribe', upload.single('audioFile'), async (req, res) => {
+
+async function TranscribeAudio(filePath) {
+    const client = new speech.SpeechClient();
+  
+    const wavFilePath = filePath.replace(/\.[^/.]+$/, '.wav');
+    await convertToWav(filePath, wavFilePath);
+  
+    const file = fs.readFileSync(wavFilePath);
+    const audioBytes = file.toString('base64');
+  
+    const audio = {
+      content: audioBytes
+    };
+  
+    const config = {
+      encoding: 'MP3',
+      sampleRateHertz: 16000,
+      languageCode: 'en-GB',
+    };
+  
+    const request = {
+      config: config,
+      audio: audio,
+    };
+  
     try {
-        const trancription = await transcribeAudio(req.file.filePath);
-        fs.unlinkSync(req.file.path);
-        res.send({transcript: trancription});
-    } catch (error) {
-        console.error('Error transcribing audio', error);
-        res.status(500).send({error: 'Failed to transcribe audio'});
+      const [operation] = await client.longRunningRecognize(request);
+      const [response] = await operation.promise();
+      const transcription = response.results
+        .map(result => result.alternatives[0].transcript)
+        .join('\n');
+  
+      console.log(`Transcription: ${transcription}`);
+      return transcription;
+    } catch (err) {
+      console.error('Error during transcription:', err);
+      return '';
+    } finally {
+      fs.unlinkSync(wavFilePath); // Clean up the converted file
     }
-});
+  }
+
+  app.post('/transcribe', upload.single('audioFile'), async (req, res) => {
+    try {
+      console.log('File info:', req.file); // Log file info
+      if (!req.file) {
+        return res.status(400).send({ error: 'No file uploaded' });
+      }
+  
+      const transcription = await TranscribeAudio(req.file.path);
+      fs.unlinkSync(req.file.path); // Clean up the uploaded file
+  
+      res.send({ transcript: transcription });
+    } catch (error) {
+      console.error('Error in /transcribe:', error);
+      res.status(500).send({ error: 'Failed to transcribe audio' });
+    }
+  });
 
 app.post('/register', async(req,res)=>{
     console.log("registration request:", req.body);

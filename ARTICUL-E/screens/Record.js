@@ -17,18 +17,6 @@ export default function Record({ navigation }) {
     Audio.requestPermissionsAsync();
   }, []);
 
-  async function downloadRecording(recordingUri, recordingTitle) {
-    try {
-      const downloadDest = `${FileSystem.documentDirectory}${recordingTitle}.mp3`;
-      await FileSystem.downloadAsync(recordingUri, downloadDest);
-      const asset = await MediaLibrary.createAssetAsync(downloadDest);
-      await MediaLibrary.createAlbumAsync('Recordings', asset, false);
-      Alert.alert('Download Complete', 'Recording downloaded successfully.');
-    } catch (error) {
-      console.error('Failed to download recording', error);
-      Alert.alert('Download Failed', 'Failed to download recording.');
-    }
-  }
 
   async function startRecording() {
     try {
@@ -68,21 +56,29 @@ export default function Record({ navigation }) {
 
   async function transcribeRecording(uri) {
     try {
+      const originalFileName = uri.split('/').pop();
+
       const formData = new FormData();
       formData.append('audioFile', {
         uri,
-        type: 'audio/wav',
-        name: 'recording.wav',
+        type: 'audio/x-m4a',
+        name: originalFileName || 'recording.m4a',
       });
-  
+
       const response = await axios.post('http://10.113.79.205:8083/transcribe', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
-  
+
       console.log('Transcription Response:', response.data);
-      return response.data.transcript || ''; // Ensure transcript exists in response
+
+      if (response.data && response.data.transcript) {
+        return response.data.transcript;
+      } else {
+        console.warn('No transcript found in response', response.data);
+        return '';
+      }
     } catch (error) {
       console.error('Failed to transcribe recording', error.response || error);
       Alert.alert('Transcription Failed', 'Failed to transcribe recording.');
@@ -180,7 +176,6 @@ export default function Record({ navigation }) {
             </MenuTrigger>
             <MenuOptions customStyles={{ optionsWrapper: { padding: 5 }, optionText: styles.text }}>
               <MenuOption onSelect={() => playRecording(recordingLine)} text="Play" />
-              <MenuOption onSelect={() => downloadRecording(recordingLine.file, recordingLine.title)} text="Download" />
               <MenuOption onSelect={() => deleteRecording(index)} text="Delete" />
               <MenuOption onSelect={() => viewTranscript(recordingLine)} text="View Transcript" />
             </MenuOptions>
@@ -326,4 +321,3 @@ const styles = StyleSheet.create({
     padding: 15,
   },
 });
-
