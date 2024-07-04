@@ -2,10 +2,12 @@ import React from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 
 export default function TranscriptScreen({ route }) {
-  const { transcript } = route.params;
+  const { transcript, title } = route.params;
+  console.log(transcript)
 
   return (
     <View style={styles.container}>
+      <Text style={styles.title}>{title}</Text>
       <ScrollView style={styles.scrollView}>
         <Text style={styles.transcriptText}>{transcript}</Text>
       </ScrollView>
@@ -16,11 +18,16 @@ export default function TranscriptScreen({ route }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
     backgroundColor: '#FFFFFF',
+    padding: 20,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 10,
   },
   scrollView: {
-    flex: 1,
+    marginTop: 10,
   },
   transcriptText: {
     fontSize: 16,

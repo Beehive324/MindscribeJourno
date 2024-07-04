@@ -11,6 +11,7 @@ import Welcome from './screens/Welcome';
 import HomeScreen from './screens/Components/HomeScreen';
 import PlaybackScreen from './screens/Components/PlaybackScreen';
 import  {Home}  from './screens/Components/Home';
+import TranscriptScreen from './screens/Components/TranscriptScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -38,6 +39,8 @@ export default function App() {
           <Stack.Screen name="Record" component={Record} options={{headerShown: false}}/>
           <Stack.Screen name="HomeScreen" component={HomeScreen} options={{headerShown: false}} />
           <Stack.Screen name="PlayBackScreen" component={PlaybackScreen} options={{headerShown: false}} />
+          <Stack.Screen name="TranscriptScreen" component={TranscriptScreen} />
+
         </Stack.Navigator>
       )}
     </NavigationContainer>
