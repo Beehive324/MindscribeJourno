@@ -1,19 +1,12 @@
 # Mindscribe
 
-Mindscribe is an innovative app designed to help people improve their vocal image and boost their confidence through audio journaling and speech emotion recognition. Whether you're looking to improve your public speaking, express emotions better, or track your vocal progress, Mindscribe offers a user-friendly platform to assist you on your journey.
+Mindscribe is an app designed to help people improve their vocal image and boost their confidence through audio journaling
 
-## Mission
-
-Our mission is to help individuals build their vocal confidence and enhance their communication skills by offering features like journaling, speech emotion recognition, and personalized feedback.
 
 ## Features
 
-- **Audio Journaling**: Capture your thoughts and emotions through voice recordings. Track your vocal progress over time.
-- **Speech Emotion Recognition**: Using machine learning models, the app analyzes your speech for emotional cues and provides feedback to help improve your vocal image.
-- **Personalized Micro-Goals**: Set and track small, manageable vocal improvement goals.
-- **Vocal Image Tracking**: Analyze your vocal tone, clarity, and confidence to identify areas for improvement.
-- **Multilingual Support**: Available in English and Portuguese.
-- **Cross-Platform**: Available on Windows, iOS, and Android.
+- **Audio Journaling**: Capture your thoughts through voice recordings. 
+- **Speech Emotion Recognition**: Using machine learning models, the app analyzes 
 
 ## Screenshots
 
@@ -27,8 +20,6 @@ Our mission is to help individuals build their vocal confidence and enhance thei
 
 - **Frontend**: React, React Native
 - **Platforms**: Windows, iOS, Android
-- **Backend**: (Insert details about backend if applicable)
-- **Machine Learning**: Speech Emotion Recognition Model
 
 ## System Design
 
