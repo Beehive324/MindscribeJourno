@@ -1,7 +1,6 @@
 # Mindscribe
 
-Mindscribe is an app designed to help people improve their vocal image and boost their confidence through audio journaling
-
+Mindscribe is an Audio Journalling app allowing people to capture their thoughts into audio
 
 ## Features
 
