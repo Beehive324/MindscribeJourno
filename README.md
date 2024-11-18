@@ -14,8 +14,8 @@ Mindscribe is an Audio Journalling app allowing people to capture their thoughts
 
 ## Tech Stack
 
-- **Frontend**: React, React Native
-- **Platforms**: Windows, iOS, Android
+- **Frontend**: React Native
+- **Platforms**: IOS
 
 ### Prerequisites
 
