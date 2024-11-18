@@ -5,7 +5,7 @@ Mindscribe is an Audio Journalling app allowing people to capture their thoughts
 ## Features
 
 - **Audio Journaling**: Capture your thoughts through voice recordings. 
-- **Speech-To-Text**: View your capture audio through text
+- **Speech-To-Text**: View your captured audio through text
 
 ## Screenshots
 
