@@ -2,7 +2,7 @@
 
 Mindscribe is an Audio Journalling app allowing people to capture their thoughts into audio
 
-Available at the App store for: [IOS](https://apps.apple.com/gb/app/mindscribejourno/id6738331850)
+Available at [mindscribe](https://apps.apple.com/gb/app/mindscribejourno/id6738331850)
 
 ## Features
 
